@@ -21,6 +21,9 @@
     "build": "rm -rf dist && tsc -d"
   },
   "author": "Octahedroid <opensource@octahedroid.com>",
+  "repository": {
+    "url": "https://github.com/octahedroid/drupal-graphql-client"
+  },
   "license": "MIT",
   "resolutions": {
     "graphql": "14 - 16"
