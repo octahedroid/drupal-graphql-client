@@ -1,5 +1,3 @@
-import fetch from "node-fetch/@types";
-
 type OptionsShared = {
   headerKey?: string;
 };
@@ -37,7 +35,7 @@ export type Options<TConfig extends Auth["token_type"]> = Extract<
 >["options"];
 
 export type Config = {
-  fetcher: typeof fetch;
+  fetcher: any;
 };
 
 export interface OAuthPayload {

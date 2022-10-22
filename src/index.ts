@@ -1,5 +1,5 @@
 import { GraphQLClient } from "graphql-request";
-import fetch from "node-fetch";
+import fetch from "cross-fetch";
 
 import { clientCredentialsHeaders, passwordHeaders } from "./authHandlers";
 import type { Auth, Config, Options } from "./types";
@@ -67,19 +67,19 @@ const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
     fetcher: fetch,
   }
 ) => {
+  const { fetcher } = config;
   const headers = await calculateAuthHeaders(
     uri,
     type,
     options,
-    config.fetcher
+    fetcher
   );
-
   if (!headers) {
     throw new Error("Unable to fetch auth headers");
   }
 
   const client = new GraphQLClient(`${uri}/graphql`, {
-    fetch: config.fetcher,
+    fetch: fetcher,
     headers,
   });
 

@@ -1,8 +1,7 @@
 import FormData from "form-data";
 import type { Config, OAuthPayload } from "./types";
-import type { Response } from "node-fetch";
 
-const parseOAuthPayload = async (response: Response, headerKey?: string) => {
+const parseOAuthPayload = async (response: any, headerKey?: string) => {
   const json = await response.json();
   const { access_token, token_type } = json as OAuthPayload;
 
