@@ -2,12 +2,14 @@ type OptionsShared = {
   headerKey?: string;
 };
 
+type ClientOptions = OptionsShared & {
+  clientId: string;
+  clientSecret: string;
+};
+
 type ClientCredentialsOAuth = {
   token_type: "client_credentials";
-  options: {
-    clientId: string;
-    clientSecret: string;
-  } & OptionsShared;
+  options: ClientOptions;
 };
 
 type PasswordOAuth = {
@@ -15,8 +17,7 @@ type PasswordOAuth = {
   options: {
     username: string;
     password: string;
-    clientId: string;
-  } & OptionsShared;
+  } & ClientOptions;
 };
 
 type TokenAuth = {

@@ -43,12 +43,14 @@ export const passwordHeaders = async (
   username: string,
   password: string,
   clientId: string,
+  clientSecret: string,
   fetcher: Config["fetcher"],
   headerKey?: string
 ) => {
   const formData = new FormData();
   formData.append("grant_type", "password");
   formData.append("client_id", clientId);
+  formData.append("client_secret", clientSecret);
   formData.append("username", username);
   formData.append("password", password);
 

@@ -26,13 +26,14 @@ const calculateAuthHeaders = async <TAuth extends Auth["token_type"]>(
     }
   }
   if (type === "password") {
-    const { username, password, clientId, headerKey } =
+    const { username, password, clientId, headerKey, clientSecret } =
       options as Options<"password">;
     const headers = await passwordHeaders(
       uri,
       username,
       password,
       clientId,
+      clientSecret,
       fetcher,
       headerKey
     );
@@ -55,8 +56,36 @@ const calculateAuthHeaders = async <TAuth extends Auth["token_type"]>(
  * Generate a drupal client with the given auth and config
  * @param uri The uri of the drupal site
  * @param auth The auth strategy to use
- * @param options The options for the auth strategy
+ * @param options {Config} The auth options
  * @param config The config for the client
+ *
+ * The type for the options is decided by the auth type
+ * @example
+ * const client = drupalClient(
+ *  "https://drupal.site",
+ * "client_credentials",
+ *  {
+ *    clientId: "client_id",
+ *    clientSecret: "client_secret",
+ *  },
+ * );
+ * 
+ * In the above example, you only need to provide the clientId and clientSecret
+ * because the auth type is "client_credentials" but if you set the auth type to
+ * "password" you would need to provide the username and password as well.
+ * 
+ * @example
+ * const client = drupalClient(
+ *  "https://drupal.site",
+ *  "password",
+ *  {
+ *    username: "username",
+ *    password: "password",
+ *    clientId: "client_id",
+ *    clientSecret: "client_secret",
+ *   }
+ * );
+ * 
  *
  **/
 const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
@@ -68,12 +97,7 @@ const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
   }
 ) => {
   const { fetcher } = config;
-  const headers = await calculateAuthHeaders(
-    uri,
-    type,
-    options,
-    fetcher
-  );
+  const headers = await calculateAuthHeaders(uri, type, options, fetcher);
   if (!headers) {
     throw new Error("Unable to fetch auth headers");
   }
