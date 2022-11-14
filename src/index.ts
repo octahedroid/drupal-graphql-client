@@ -99,8 +99,7 @@ const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
   const { fetcher, authURI } = config;
 
   const url = new URL(uri);
-  const formattedAuthURI = authURI ? authURI : `${url.origin}/oauth/token`;
-
+  const formattedAuthURI = `${authURI ? authURI : url.origin}/oauth/token`;
   const headers = await calculateAuthHeaders(
     formattedAuthURI,
     type,
