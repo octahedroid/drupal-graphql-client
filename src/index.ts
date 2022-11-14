@@ -69,11 +69,11 @@ const calculateAuthHeaders = async <TAuth extends Auth["token_type"]>(
  *    clientSecret: "client_secret",
  *  },
  * );
- * 
+ *
  * In the above example, you only need to provide the clientId and clientSecret
  * because the auth type is "client_credentials" but if you set the auth type to
  * "password" you would need to provide the username and password as well.
- * 
+ *
  * @example
  * const client = drupalClient(
  *  "https://drupal.site",
@@ -85,7 +85,7 @@ const calculateAuthHeaders = async <TAuth extends Auth["token_type"]>(
  *    clientSecret: "client_secret",
  *   }
  * );
- * 
+ *
  *
  **/
 const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
@@ -96,13 +96,22 @@ const drupalGraphqlClient = async <TAuth extends Auth["token_type"]>(
     fetcher: fetch,
   }
 ) => {
-  const { fetcher } = config;
-  const headers = await calculateAuthHeaders(uri, type, options, fetcher);
+  const { fetcher, authURI } = config;
+
+  const url = new URL(uri);
+  const formattedAuthURI = authURI ? authURI : `${url.origin}/oauth/token`;
+
+  const headers = await calculateAuthHeaders(
+    formattedAuthURI,
+    type,
+    options,
+    fetcher
+  );
   if (!headers) {
     throw new Error("Unable to fetch auth headers");
   }
 
-  const client = new GraphQLClient(`${uri}/graphql`, {
+  const client = new GraphQLClient(uri, {
     fetch: fetcher,
     headers,
   });
