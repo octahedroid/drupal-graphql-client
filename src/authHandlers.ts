@@ -12,7 +12,7 @@ const parseOAuthPayload = async (response: any, headerKey?: string) => {
 };
 
 export const clientCredentialsHeaders = async (
-  uri: string,
+  authUri: string,
   clientId: string,
   clientSecret: string,
   fetcher: Config["fetcher"],
@@ -23,7 +23,7 @@ export const clientCredentialsHeaders = async (
   formData.append("client_id", clientId);
   formData.append("client_secret", clientSecret);
 
-  const response = await fetcher(`${uri}/oauth/token`, {
+  const response = await fetcher(authUri, {
     method: "post",
     headers: {
       Accept: "application/json",
@@ -39,7 +39,7 @@ export const clientCredentialsHeaders = async (
 };
 
 export const passwordHeaders = async (
-  uri: string,
+  authUri: string,
   username: string,
   password: string,
   clientId: string,
@@ -54,7 +54,7 @@ export const passwordHeaders = async (
   formData.append("username", username);
   formData.append("password", password);
 
-  const response = await fetcher(`${uri}/oauth/token`, {
+  const response = await fetcher(authUri, {
     method: "post",
     headers: {
       Accept: "application/json",

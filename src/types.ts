@@ -37,6 +37,7 @@ export type Options<TConfig extends Auth["token_type"]> = Extract<
 
 export type Config = {
   fetcher: any;
+  authURI?: string;
 };
 
 export interface OAuthPayload {
